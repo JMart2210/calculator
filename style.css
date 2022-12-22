@@ -1,0 +1,15 @@
+.case {
+    width:max-content;
+}
+.display {
+    display: flex;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    flex: 1;
+}
