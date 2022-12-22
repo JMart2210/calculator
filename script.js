@@ -6,6 +6,8 @@ operationButtons.forEach(button => button.addEventListener('click', operationCli
 
 const changeButtons = Array.from(document.querySelectorAll('.change'));
 changeButtons.forEach(button => button.addEventListener('click', changeClick))
+
+const periodButton = document.getElementById('.');
 const display = document.querySelector('.display');
 
 const add = (a, b) => +a + +b;
@@ -17,6 +19,7 @@ const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
 function numberClick(e) {
+    if (e.target.id == '.') periodButton.disabled = true;
     if (tempInput) allClear();
     if (!first) {
         input1 ? input1 += e.target.id : input1 = e.target.id;
@@ -27,6 +30,7 @@ function numberClick(e) {
             displayValue = input2;
             display.textContent = input2;
         }
+    lastClick = null;
 }
 
 function changeClick(e) {
@@ -61,6 +65,9 @@ function changeClick(e) {
 }
 
 function operationClick(e) {
+    if (lastClick == e.target.id) return;
+    lastClick = e.target.id;
+    periodButton.disabled = false;
     if (tempInput) {
         input1 = tempInput;
         tempInput = null;
@@ -104,59 +111,9 @@ function allClear() {
     displayValue = input1;
     operator = null;
     tempInput = null;
+    lastClick = null;
+    periodButton.disabled = false;
 }
-// function operationClick(e) {
-//     if (input1) first = true;
-//     switch (e.target.id) {
-//         case 'add':
-//             nextOperator = add;
-//             if (input1 === 0 || input2 === 0) {
-//                 operator = nextOperator;
-//                 break;
-//             }
-//             displayValue = operate(operator, input1, input2);
-//             operator = nextOperator;
-//             break;
-//         case 'subtract':
-//             nextOperator = subtract;
-//             if (input1 === 0 || input2 === 0) {
-//                 operator = nextOperator;
-//                 break;
-//             }
-//             displayValue = operate(operator, input1, input2);
-//             operator = nextOperator;
-//             break;
-//         case 'multiply':
-//             nextOperator = multiply;
-//             if (input1 === 0 || input2 === 0) {
-//                 operator = nextOperator;
-//                 break;
-//             }
-//             displayValue = operate(operator, input1, input2);
-//             operator = nextOperator;
-//             break;
-//         case 'divide':
-//             nextOperator = divide;
-//             if (input1 === 0 || input2 === 0) {
-//                 operator = nextOperator;
-//                 break;
-//             }
-//             displayValue = operate(operator, input1, input2);
-//             operator = nextOperator;
-//             break;
-//         case 'equal': //Need to work on hitting equals multiple times after multiplying
-//             if (input1 === 0 || input2 === 0) {
-//                 break;
-//             }
-//             displayValue = operate(operator, input1, input2);
-//             break;
-//     }
-    
-//     input1 = displayValue;
-//     input2 = 0;
-    
-//     updateDisplay(displayValue);            
-//     }
 
 const operate = function(func, x, y) {
     if (!func) func = nextOperator;
@@ -165,7 +122,8 @@ const operate = function(func, x, y) {
 };
 
 const updateDisplay = function(str) {
-    display.textContent = Math.round(str * 10000) / 10000;
+    if (str == 'Infinity') display.textContent = 'Snarky Error';
+    else display.textContent = Math.round(str * 10000) / 10000;
 }
 
 let operator;
@@ -176,3 +134,4 @@ let input2 = 0;
 let tempInput;
 let displayValue = 0;
 display.textContent = displayValue;
+let lastClick = null;
