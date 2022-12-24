@@ -19,14 +19,29 @@ const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
 function numberClick(e) {
-    if (e.target.id == '.') periodButton.disabled = true;
+    let data = '';
+    if (this.id == undefined) {
+        if (e.key >= 0 && e.key <10 || e.key == '.') data = e.key;
+        else return;
+    } else data = this.id;
+    if (data == '.') periodButton.disabled = true;
     if (tempInput) allClear();
     if (!first) {
-        input1 ? input1 += e.target.id : input1 = e.target.id;
+        if (data == 'X') {
+            input1 = deleteLast(input1);
+            displayValue = input1;
+            return;
+        }
+        input1 ? input1 += data : input1 = data;
         displayValue = input1;
         display.textContent = input1;
         } else {
-            input2 ? input2 += e.target.id : input2 = e.target.id;
+            if (data == 'X') {
+                input2 = deleteLast(input2);
+                displayValue = input2;
+                return;
+            }
+            input2 ? input2 += data : input2 = data;
             displayValue = input2;
             display.textContent = input2;
         }
@@ -34,11 +49,13 @@ function numberClick(e) {
 }
 
 function changeClick(e) {
+    let data = '';
+    data = this.id;
     if (tempInput) {
         input1 = tempInput;
         tempInput = null;
     }
-    switch (e.target.id) {
+    switch (data) {
         case 'all clear':
             allClear();
             break;
@@ -65,14 +82,17 @@ function changeClick(e) {
 }
 
 function operationClick(e) {
-    if (lastClick == e.target.id) return;
-    lastClick = e.target.id;
+    let data = '';
+    data = this.id;
+    
+    if (lastClick == data) return;
+    lastClick = data;
     periodButton.disabled = false;
     if (tempInput) {
         input1 = tempInput;
         tempInput = null;
     }
-    switch (e.target.id) {
+    switch (data) {
         case 'add':
             nextOperator = add;
             break;
@@ -92,7 +112,7 @@ function operationClick(e) {
     } else {
         displayValue = operate(operator, input1, input2);
         operator = nextOperator;
-        if (e.target.id === 'equal') {
+        if (data === 'equal') {
             tempInput = displayValue;
             input1 = 0;
             input2 = 0;
@@ -115,6 +135,13 @@ function allClear() {
     periodButton.disabled = false;
 }
 
+function deleteLast(str) {
+    if (str.toString().length == 1) return 0;
+    let ans = str.slice(0, -1);
+    updateDisplay(ans);
+    return ans;
+}
+
 const operate = function(func, x, y) {
     if (!func) func = nextOperator;
     displayValue = func(x, y);
@@ -125,6 +152,11 @@ const updateDisplay = function(str) {
     if (str == 'Infinity') display.textContent = 'Snarky Error';
     else display.textContent = Math.round(str * 10000) / 10000;
 }
+function updateKbd(e) {
+    numberClick(e);
+}
+
+window.addEventListener('keydown', updateKbd);
 
 let operator;
 let nextOperator = add;
