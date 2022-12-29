@@ -24,9 +24,6 @@ body {
 .buttons {
     height: auto;
 }
-.row {
-    
-}
 
 button {
     background-color: rgb(151, 151, 151);
@@ -34,8 +31,11 @@ button {
     color: white;
     border-radius: 1px;
     height: 75px;
+    cursor: pointer;
 }
-
+button:hover {
+    opacity: .88;
+}
 .change {
     background-color: rgb(112, 112, 112);
     font-weight: 600;

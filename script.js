@@ -21,7 +21,6 @@ const display = document.querySelector('.display');
 //function that is called when a number is clicked (or keyboard is pressed)
 
 function numberClick(e) {
-
     // I created a data variable make it consistent whether it is coming
     // from the e.key(key stroke) or this.id (mouse click).
     
@@ -219,6 +218,7 @@ const updateDisplay = function(str) {
     else display.textContent = Math.round(str * 10000) / 10000;
 }
 function updateKbd(e) {
+    e.preventDefault();
     switch (e.key) {
         case '0':
         case '1':
