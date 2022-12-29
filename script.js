@@ -30,7 +30,7 @@ function numberClick(e) {
     
     // this just disables the "." once pressed. It's enabled if an operation
     // is pressed or if All Clear is run.
-    
+    if (periodButton.disabled == true && data == '.') return;
     if (data == '.') periodButton.disabled = true;
     
     // I assigned a tempInput variable if the answer is found using the 
