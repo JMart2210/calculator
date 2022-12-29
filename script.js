@@ -24,52 +24,51 @@ function numberClick(e) {
     // I created a data variable make it consistent whether it is coming
     // from the e.key(key stroke) or this.id (mouse click).
     
-    let data = '';
-    (e.key == undefined) ? data = this.id : data = e.key;
+    const data = e.key || this.id;
     
     // this just disables the "." once pressed. It's enabled if an operation
     // is pressed or if All Clear is run.
     if (periodButton.disabled == true && data == '.') return;
     if (data == '.') periodButton.disabled = true;
     
-    // I assigned a tempInput variable if the answer is found using the 
-    // equals key. This way if there is a tempInput, and you've reached
+    // I assigned a tempResult variable if the answer is found using the 
+    // equals key. This way if there is a tempResult, and you've reached
     // this point by hitting a number key, it will clear everything out
     // as if you are starting from scratch.
     
-    if (tempInput) allClear();
+    if (tempResult) allClear();
 
-    // First tells you if input1 has a value. So it will stay true 
-    // because input1 receives the result of the calculation. It is only
+    // First tells you if firstOperand has a value. So it will stay true 
+    // because firstOperand receives the result of the calculation. It is only
     // cleared out when allClear is ran.
 
     if (!first) {
 
-        // if backspace is hit, this deletes the last digit of input1.
+        // if backspace is hit, this deletes the last digit of firstOperand.
         if (data == 'X' || data =='Backspace') {
-            input1 = deleteLast(input1);
-            displayValue = input1;
+            firstOperand = deleteLast(firstOperand);
+            displayValue = firstOperand;
             return;
         }
-        // this is for the first time around. If input1 doesn't exist
+        // this is for the first time around. If firstOperand doesn't exist
         // it sets it equal to the data, otherwise it appends the data 
         // to itself.
-        input1 ? input1 += data : input1 = data;
-        displayValue = input1;
+        firstOperand ? firstOperand += data : firstOperand = data;
+        displayValue = firstOperand;
         //I didn't use the updateDisplay func here because it limits the 
         // visible results and I wanted the user to be able to input as
         // much as they wanted to.
-        display.textContent = input1;
-        // This block of code is same as above, just for input2.
+        display.textContent = firstOperand;
+        // This block of code is same as above, just for secondOperand.
         } else {
             if (data == 'X' || data =='Backspace') {
-                input2 = deleteLast(input2);
-                displayValue = input2;
+                secondOperand = deleteLast(secondOperand);
+                displayValue = secondOperand;
                 return;
             }
-            input2 ? input2 += data : input2 = data;
-            displayValue = input2;
-            display.textContent = input2;
+            secondOperand ? secondOperand += data : secondOperand = data;
+            displayValue = secondOperand;
+            display.textContent = secondOperand;
         }
     // this empties lastClick, which is used to make sure operations aren't
     // pressed multiples times in a row.
@@ -77,13 +76,12 @@ function numberClick(e) {
 }
 
 function changeClick(e) {
-    let data = '';
-    (e.key == undefined) ? data = this.id : data = e.key;
-    // if there is tempInput, we want to ignore that, and treat it the same
-    // as if it was regular input1. 
-    if (tempInput) {
-        input1 = tempInput;
-        tempInput = null;
+    const data = e.key || this.id;
+    // if there is tempResult, we want to ignore that, and treat it the same
+    // as if it was regular firstOperand. 
+    if (tempResult) {
+        firstOperand = tempResult;
+        tempResult = null;
     }
 
     switch (data) {
@@ -92,22 +90,22 @@ function changeClick(e) {
             allClear();
             break;
         case 'negative':
-            if (input2 === null) {
-                input1 = -input1;
-                displayValue = input1;
+            if (secondOperand === null) {
+                firstOperand = -firstOperand;
+                displayValue = firstOperand;
             } else {
-                input2 = -input2;
-                displayValue = input2;
+                secondOperand = -secondOperand;
+                displayValue = secondOperand;
             }
             break;
         case 'percent':
         case '%':
-            if (input2 === null) {
-                input1 = divide(input1, 100);
-                displayValue = input1;
+            if (secondOperand === null) {
+                firstOperand = divide(firstOperand, 100);
+                displayValue = firstOperand;
             } else {
-                input2 = divide(input2, 100);
-                displayValue = input2;
+                secondOperand = divide(secondOperand, 100);
+                displayValue = secondOperand;
             }
             break;
         }
@@ -115,8 +113,8 @@ function changeClick(e) {
 }
 
 function operationClick(e) {
-    let data = '';
-    (e.key == undefined) ? data = this.id : data = e.key;
+
+    const data = e.key || this.id;
     
     // This used to help from hitting same operation over and over
     // but I haven't updated it since I added the keyboard strokes.
@@ -129,12 +127,12 @@ function operationClick(e) {
     // a decimal. 
     periodButton.disabled = false;
 
-    // This treats tempInput the same as regular input1. tempInput is used
+    // This treats tempResult the same as regular firstOperand. tempResult is used
     // in the numberClick func to determine if we are using the answer 
     // that was just calculated, or inputting a new number to start from scratch.
-    if (tempInput) {
-        input1 = tempInput;
-        tempInput = null;
+    if (tempResult) {
+        firstOperand = tempResult;
+        tempResult = null;
     }
 
     switch (data) {
@@ -155,33 +153,33 @@ function operationClick(e) {
             nextOperator = divide;
             break;
     }
-    // This tells our numberClick func that input1 has a value.
-    if (input1 != null) first = true;
+    // This tells our numberClick func that firstOperand has a value.
+    if (firstOperand != null) first = true;
     // if either input is still empty (so we aren't ready to execute)
     // this sets the operator to be next in line. 
-    if (input1 == null || input2 == null) {
+    if (firstOperand == null || secondOperand == null) {
         operator = nextOperator;
     } 
     // this executes the operation.
     else {
-        displayValue = operate(operator, input1, input2);
+        displayValue = operate(operator, firstOperand, secondOperand);
         operator = nextOperator;
         // After you hit equal, you want to be able to use the 
-        // result of the calculation as the next input1 OR you want
+        // result of the calculation as the next firstOperand OR you want
         // to be able to input a new number to start from scratch.
-        // tempInput gives you that functionality. 
+        // tempResult gives you that functionality. 
         if (data === 'equal' || data == 'Enter') {
-            tempInput = displayValue;
-            input1 = null;
-            input2 = null;
+            tempResult = displayValue;
+            firstOperand = null;
+            secondOperand = null;
         } 
         // if we didn't get the answer from hitting the equal key,
         // then we just want to start the process over again by 
-        // setting input1 equal to the displayValue we got from the 
+        // setting firstOperand equal to the displayValue we got from the 
         // operation.
         else { 
-            input1 = displayValue;
-            input2 = null;
+            firstOperand = displayValue;
+            secondOperand = null;
         }
     }   
     updateDisplay(displayValue);            
@@ -189,12 +187,12 @@ function operationClick(e) {
 
 
 function allClear() {
-    input1 = null;
-    input2 = null;
+    firstOperand = null;
+    secondOperand = null;
     first = false;
-    displayValue = input1;
+    displayValue = firstOperand;
     operator = null;
-    tempInput = null;
+    tempResult = null;
     lastClick = null;
     periodButton.disabled = false;
 }
@@ -254,9 +252,9 @@ document.addEventListener('keydown', updateKbd);
 let operator;
 let nextOperator = add;
 let first = false;
-let input1 = null;
-let input2 = null;
-let tempInput;
+let firstOperand = null;
+let secondOperand = null;
+let tempResult;
 let displayValue = 0;
 display.textContent = displayValue;
 let lastClick = null;
