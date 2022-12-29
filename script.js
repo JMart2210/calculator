@@ -55,7 +55,7 @@ function numberClick(e) {
         // to itself.
         firstOperand ? firstOperand += data : firstOperand = data;
         displayValue = firstOperand;
-        //I didn't use the updateDisplay func here because it limits the 
+        // I didn't use the updateDisplay func here because it limits the 
         // visible results and I wanted the user to be able to input as
         // much as they wanted to.
         display.textContent = firstOperand;
