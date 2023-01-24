@@ -1,45 +1,45 @@
 body {
-    color: white;
+  color: white;
 }
 .case {
-    min-width: 300px;
-    min-height: 400px;
-    width:max-content;
-    background-color: rgb(63, 63, 63);
-    padding: 10px 7px 5px;
-    border-radius: 10px;
+  min-width: 300px;
+  min-height: 400px;
+  width: max-content;
+  background-color: rgb(63, 63, 63);
+  padding: 10px 7px 5px;
+  border-radius: 10px;
 }
 .display {
-    height: 85px;
-    line-height: 85px;
-    font-size: 48px;
-    font-weight: 300;
-    text-align: right;
-    background-color: rgb(85, 85, 85);
-    border-radius: 3px;
-    margin-bottom: 5px;
-    padding: 5px 5px;
+  height: 85px;
+  line-height: 85px;
+  font-size: 48px;
+  font-weight: 300;
+  text-align: right;
+  background-color: rgb(85, 85, 85);
+  border-radius: 3px;
+  margin-bottom: 5px;
+  padding: 5px 5px;
 }
 
 .buttons {
-    height: auto;
+  height: auto;
 }
 
 button {
-    background-color: rgb(151, 151, 151);
-    width: 75px;
-    color: white;
-    border-radius: 1px;
-    height: 75px;
-    cursor: pointer;
+  background-color: rgb(151, 151, 151);
+  width: 75px;
+  color: white;
+  border-radius: 1px;
+  height: 75px;
+  cursor: pointer;
 }
 button:hover {
-    opacity: .88;
+  opacity: 0.88;
 }
 .change {
-    background-color: rgb(112, 112, 112);
-    font-weight: 600;
+  background-color: rgb(112, 112, 112);
+  font-weight: 600;
 }
 .operator {
-    background-color: rgb(251, 169, 74);
+  background-color: rgb(251, 169, 74);
 }
